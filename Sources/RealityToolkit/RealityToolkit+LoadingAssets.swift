@@ -23,14 +23,23 @@ public extension RealityToolkit {
     ///   This method will block the main thread when loading the resource into memory.
     ///   If a local file is passed as the URL, it will not download the file to the end destination, and will not move the item.
     /// - Returns: A TextureResource containing the downloaded image.
+public extension RealityToolkit {
     static func loadRemoteTexture(
         contentsOf url: URL, saveTo destination: URL? = nil, useCache: Bool = true
     ) async throws -> TextureResource {
         let localPath = try await RealityToolkit.downloadRemoteFile(
             contentsOf: url, saveTo: destination, useCache: useCache
         )
-        return try await self.loadResourceCompletion(contentsOf: localPath)
+        // Run the load operation in the background
+        return try await Task.runDetached {
+            return try await self.loadResourceCompletion(contentsOf: localPath)
+        }
     }
+
+    internal static func loadResourceCompletion(contentsOf url: URL) async throws -> TextureResource {
+        return try TextureResource.load(contentsOf: url)
+    }
+}
 
     internal static func loadResourceCompletion(
         contentsOf url: URL
