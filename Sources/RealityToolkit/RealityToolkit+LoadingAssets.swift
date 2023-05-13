@@ -22,7 +22,7 @@ public extension RealityToolkit {
             contentsOf: url, saveTo: destination, useCache: useCache
         )
         // Run the load operation in the background
-        let task = Task.runDetached {
+        let task = Task.detached {
             return try await self.loadResourceCompletion(contentsOf: localPath)
         }
         return try await task.value
