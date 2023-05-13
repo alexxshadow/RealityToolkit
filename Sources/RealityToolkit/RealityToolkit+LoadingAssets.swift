@@ -12,17 +12,7 @@ import SceneKit
 import Combine
 
 // MARK: TextureResource
-public extension RealityToolkit {
-    /// Load texture from Remote URL and return as a TextureResource in the completion
-    /// - Parameters:
-    ///   - url: URL for remote file, including file name and extension.
-    ///   - destination: Destination path or exact file URL where the image fill will be saved.
-    ///   - useCache: Whether any previously downloaded version should be used
-    ///   - completion: Result type callback to either get the TextureResource or an Error
-    ///
-    ///   This method will block the main thread when loading the resource into memory.
-    ///   If a local file is passed as the URL, it will not download the file to the end destination, and will not move the item.
-    /// - Returns: A TextureResource containing the downloaded image.
+// MARK: TextureResource
 public extension RealityToolkit {
     static func loadRemoteTexture(
         contentsOf url: URL, saveTo destination: URL? = nil, useCache: Bool = true
@@ -38,14 +28,6 @@ public extension RealityToolkit {
 
     internal static func loadResourceCompletion(contentsOf url: URL) async throws -> TextureResource {
         return try TextureResource.load(contentsOf: url)
-    }
-}
-
-    internal static func loadResourceCompletion(
-        contentsOf url: URL
-    ) async throws -> TextureResource {
-        if Thread.isMainThread { return try TextureResource.load(contentsOf: url) }
-        return try await MainActor.run { try TextureResource.load(contentsOf: url) }
     }
 }
 
