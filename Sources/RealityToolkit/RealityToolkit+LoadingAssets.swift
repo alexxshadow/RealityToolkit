@@ -29,7 +29,7 @@ public extension RealityToolkit {
     }
 
     internal static func loadResourceCompletion(contentsOf url: URL) async throws -> TextureResource {
-        return try TextureResource.load(contentsOf: url)
+        return try await TextureResource.load(contentsOf: url)
     }
 }
 
