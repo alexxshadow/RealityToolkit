@@ -13,6 +13,7 @@ import Combine
 
 // MARK: TextureResource
 // MARK: TextureResource
+// MARK: TextureResource
 public extension RealityToolkit {
     static func loadRemoteTexture(
         contentsOf url: URL, saveTo destination: URL? = nil, useCache: Bool = true
@@ -21,9 +22,10 @@ public extension RealityToolkit {
             contentsOf: url, saveTo: destination, useCache: useCache
         )
         // Run the load operation in the background
-        return try await Task.runDetached {
+        let task = Task.runDetached {
             return try await self.loadResourceCompletion(contentsOf: localPath)
         }
+        return try await task.value
     }
 
     internal static func loadResourceCompletion(contentsOf url: URL) async throws -> TextureResource {
